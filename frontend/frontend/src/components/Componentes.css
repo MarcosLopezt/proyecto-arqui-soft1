@@ -1,0 +1,12 @@
+.navbar{
+    background-color: #785589;
+}
+
+.button-misCursos{
+    background-color: rgb(49, 45, 45);
+}
+
+.contenedor-cards{
+    display: flex;
+
+}

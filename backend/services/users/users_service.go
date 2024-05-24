@@ -1,6 +1,6 @@
 package users
 
-import "backend/domain/users"
+import "backend/models/users"
 
 func Login(request users.LoginRequest) users.LoginResponse {
 	// Validar contra la base de datos

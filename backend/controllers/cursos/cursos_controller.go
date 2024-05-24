@@ -1,11 +1,22 @@
 package cursos
 
 import (
-	cursosDomain "backend/domain/cursos"
+	cursosDomain "backend/models/cursos"
+	//"Context"
 	//cursosServices "backend/services/cursos"
-	//"context"
 	"github.com/gin-gonic/gin"
 )
+
+//funcion para iniciar base de datos
+
+func GetCourses(context *gin.Context) {
+	var courseRequest cursosDomain.CreateCourseRequest
+
+	//buscar los cursos base de datos
+
+	context.BindJSON(&courseRequest)
+
+}
 
 func CreateCourse(context *gin.Context) {
 	var courseRequest cursosDomain.CreateCourseRequest

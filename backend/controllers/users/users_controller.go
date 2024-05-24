@@ -2,7 +2,7 @@ package users
 
 import (
 	//"context"
-	usersDomain "backend/domain/users"
+	usersDomain "backend/models/users"
 	usersService "backend/services/users"
 
 	"github.com/gin-gonic/gin"
