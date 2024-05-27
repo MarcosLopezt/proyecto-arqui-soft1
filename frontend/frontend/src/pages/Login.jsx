@@ -12,6 +12,9 @@ import Grid from '@mui/material/Grid';
 //import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import * as Yup from "yup"
+import { useFormik } from 'formik';
+import { useNavigate } from "react-router-dom";
 
 function Copyright(props) {
   return (
@@ -29,15 +32,46 @@ function Copyright(props) {
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
+const usuarios = [
+  {email: "marcos.lopez@gmail", password: "12345"},
+  {email: "marcos.lopez@mindfactory.ar", password: "12345"},
+  {email: "marc12@gmail" , password:"11111" },
+];
+
 export default function Login() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+
+  const navigate = useNavigate();
+
+  const enviarForm = (values) => {
+    const userValid = usuarios.find((usuario) => usuario.email === values.Email && usuario.password === values.Password);
+    if(userValid){
+      navigate("/home");
+    }else{
+      alert("Invalid Username or password");
+      console.log("Invalid User");
+    }
   };
+
+  const {handleSubmit, handleChange, values, errors} = useFormik({
+    initialValues:{
+      Email: "",
+      Password: ""
+    },
+
+    validationSchema: Yup.object({
+      Email: Yup.string()
+      .required("¡Campo Requerido!")
+      .email("Correo electronico invalido")
+      .max(255, "Maximo 255 caracteres"),
+    Password: Yup.string()
+      .required("¡Campo Requerido!")
+      .min(5, "Minimo 5 caracteres"),
+    }),
+
+    onSubmit: enviarForm
+
+    
+  })
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -76,23 +110,26 @@ export default function Login() {
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
-                required
                 fullWidth
-                id="email"
                 label="Email Address"
-                name="email"
+                name="Email"
                 autoComplete="email"
-                autoFocus
+                onChange={handleChange}
+                value= {values.Email}
+                error ={!!errors.Email}
+                helperText={errors.Email}
               />
               <TextField
                 margin="normal"
-                required
                 fullWidth
-                name="password"
+                name="Password"
                 label="Password"
                 type="password"
-                id="password"
                 autoComplete="current-password"
+                onChange={handleChange}
+                value = {values.Password}
+                error = {!!errors.Password}
+                helperText={errors.Password}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
