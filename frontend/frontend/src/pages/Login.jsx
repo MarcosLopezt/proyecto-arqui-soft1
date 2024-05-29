@@ -33,9 +33,9 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 const usuarios = [
-  {email: "marcos.lopez@gmail", password: "12345"},
-  {email: "marcos.lopez@mindfactory.ar", password: "12345"},
-  {email: "marc12@gmail" , password:"11111" },
+  { email: "marcos.lopez@gmail", password: "12345" },
+  { email: "marcos.lopez@mindfactory.ar", password: "12345" },
+  { email: "marc12@gmail", password: "11111" },
 ];
 
 export default function Login() {
@@ -44,33 +44,33 @@ export default function Login() {
 
   const enviarForm = (values) => {
     const userValid = usuarios.find((usuario) => usuario.email === values.Email && usuario.password === values.Password);
-    if(userValid){
+    if (userValid) {
       navigate("/home");
-    }else{
+    } else {
       alert("Invalid Username or password");
       console.log("Invalid User");
     }
   };
 
-  const {handleSubmit, handleChange, values, errors} = useFormik({
-    initialValues:{
+  const { handleSubmit, handleChange, values, errors } = useFormik({
+    initialValues: {
       Email: "",
       Password: ""
     },
 
     validationSchema: Yup.object({
       Email: Yup.string()
-      .required("¡Campo Requerido!")
-      .email("Correo electronico invalido")
-      .max(255, "Maximo 255 caracteres"),
-    Password: Yup.string()
-      .required("¡Campo Requerido!")
-      .min(5, "Minimo 5 caracteres"),
+        .required("¡Campo Requerido!")
+        .email("Correo electronico invalido")
+        .max(255, "Maximo 255 caracteres"),
+      Password: Yup.string()
+        .required("¡Campo Requerido!")
+        .min(5, "Minimo 5 caracteres"),
     }),
 
     onSubmit: enviarForm
 
-    
+
   })
 
   return (
@@ -102,7 +102,7 @@ export default function Login() {
             }}
           >
             <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-              
+
             </Avatar>
             <Typography component="h1" variant="h5">
               Sign in
@@ -115,8 +115,8 @@ export default function Login() {
                 name="Email"
                 autoComplete="email"
                 onChange={handleChange}
-                value= {values.Email}
-                error ={!!errors.Email}
+                value={values.Email}
+                error={!!errors.Email}
                 helperText={errors.Email}
               />
               <TextField
@@ -127,8 +127,8 @@ export default function Login() {
                 type="password"
                 autoComplete="current-password"
                 onChange={handleChange}
-                value = {values.Password}
-                error = {!!errors.Password}
+                value={values.Password}
+                error={!!errors.Password}
                 helperText={errors.Password}
               />
               <FormControlLabel
@@ -150,8 +150,8 @@ export default function Login() {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
+                  <Link href="/register" variant="body2">
+                    {"Don't have an account? Register"}
                   </Link>
                 </Grid>
               </Grid>
