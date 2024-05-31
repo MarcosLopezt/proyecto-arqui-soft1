@@ -2,12 +2,9 @@ package cursos
 
 import (
 	"backend/models/cursos"
-
-	"github.com/gin-gonic/gin"
-	"gorm.io/driver/sqlite"
-	"gorm.io/gorm"
 )
 
+/*
 func RegisterRoutes() *gin.Engine {
 
 	router := gin.Default()
@@ -23,7 +20,7 @@ func RegisterRoutes() *gin.Engine {
 	db.AutoMigrate(&cursos.Course{})
 
 }
-
+*/
 func createCourse(request cursos.CreateCourseRequest) cursos.CreateCourseResponse {
 
 	//almacenar request en la base de datos

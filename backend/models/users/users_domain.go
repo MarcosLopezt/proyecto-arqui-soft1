@@ -1,10 +1,15 @@
 package users
 
-type LoginRequest struct {
-	Username string `json:"username "`
-	Password string `json:"password "`
-}
+import (
+	"time"
+)
 
-type LoginResponse struct {
-	Token string `json:"token "`
+type User struct {
+	ID           uint   `gorm:"primaryKey"`
+	Username     string `gorm:"uniqueIndex"`
+	Email        string
+	PasswordHash string
+	Role         string
+	CreationDate time.Time
+	LastUpdated  time.Time
 }
