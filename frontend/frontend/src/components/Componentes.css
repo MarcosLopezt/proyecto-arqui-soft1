@@ -1,9 +1,24 @@
 
 .button-misCursos{
-    background-color: rgb(49, 45, 45);
+    background-color: rgb(49, 45, 45) !important;
+    margin-right: 20px;
 }
 
-.contenedor-cards{
-    display: flex;
+.button-misCursos:hover{
+    transform: scale(1.1);
+}
 
+.button-logout  {
+    font-size: 16px; /* Tamaño del texto */
+    padding: 2px 3px; /* Relleno superior e inferior: 10px, relleno izquierdo y derecho: 20px */
+}
+
+.list-conteiner{
+    font-size: 16px; /* Tamaño del texto */
+    padding: 1px 1px;
+}
+
+.icon-logout{
+    font-size: 10px; /* Tamaño del texto */
+    padding: 1px 1px; 
 }

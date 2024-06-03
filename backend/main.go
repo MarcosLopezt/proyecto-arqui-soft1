@@ -19,7 +19,7 @@ func main() {
 
 	engine := gin.Default()
 
-	// Configura el middleware CORS
+	// Configuracion del middleware CORS
 	engine.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"*"}, // Permitir solicitudes de cualquier origen
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},

@@ -11,7 +11,10 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 //import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
+import * as Yup from "yup"
+import { useFormik } from 'formik';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
 
 function Copyright(props) {
   return (
@@ -29,15 +32,61 @@ function Copyright(props) {
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
+
 export default function Register() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+  const navigate = useNavigate();
+
+  const login = async (email, password) => {
+    console.log(email);
+    console.log(password);
+    let role = "user";
+    console.log(role);
+    const response = await fetch('http://localhost:8080/users/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ "email": email, "password": password, "role": role})
     });
+
+    if (response.status === 201) {
+      const data = await response.json();
+      console.log(data);
+      navigate("/home");
+      
+    } else if (response.status === 400 || response.status === 401 || response.status === 403) {
+      // Manejar caso de credenciales inválidas
+      console.log("Invalid username or password");
+      alert("Invalid Username or password");
+    } else {
+      // Manejar otros errores de la solicitud
+      console.error("An error occurred while logging in");
+    }
   };
+
+  const enviarForm = (values) =>{
+    login(values.Email, values.Password);
+  }
+
+  const {handleSubmit, handleChange, values, errors} = useFormik({
+    initialValues:{
+      Email: "",
+      Password: ""
+    },
+
+    validationSchema: Yup.object({
+      Email: Yup.string()
+      .required("¡Campo Requerido!")
+      .email("Correo electronico invalido")
+      .max(255, "Maximo 255 caracteres"),
+    Password: Yup.string()
+      .required("¡Campo Requerido!")
+      .min(5, "Minimo 5 caracteres"),
+    }),
+
+    onSubmit: enviarForm
+
+  })
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -78,21 +127,26 @@ export default function Register() {
                 margin="normal"
                 required
                 fullWidth
-                id="email"
+                onChange={handleChange}
                 label="Email Address"
-                name="email"
+                name="Email"
                 autoComplete="email"
-                autoFocus
+                value= {values.Email}
+                error ={!!errors.Email}
+                helperText={errors.Email}
               />
               <TextField
                 margin="normal"
                 required
                 fullWidth
-                name="password"
+                name="Password"
                 label="Password"
                 type="password"
-                id="password"
+                value = {values.Password}
                 autoComplete="current-password"
+                onChange={handleChange}
+                error = {!!errors.Password}
+                helperText={errors.Password}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}

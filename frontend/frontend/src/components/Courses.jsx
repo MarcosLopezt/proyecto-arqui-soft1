@@ -1,30 +1,7 @@
 import React from 'react';
-import { Card, CardContent, CardActions, Typography, Button, CardMedia } from '@mui/material';
+import CourseCard from './CourseCard';
+import "./CourseCard.css"
 
-function CourseCard({ title, description }) {
-    return (
-      <Card sx={{ maxWidth: 345, margin:"20px", marginTop:"60px", borderWidth: "5px" ,borderColor:"#785589" }}>
-        <CardMedia
-          component="img"
-          alt="Curso"
-          height="140"
-          image="/static/images/cards/course.jpg" // Ruta de la imagen del curso
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            {title}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {description}
-          </Typography>
-        </CardContent>
-        <CardActions>
-          <Button size="small">Compartir</Button>
-          <Button size="small">Más información</Button>
-        </CardActions>
-      </Card>
-    );
-  }
 
   function Courses() {
     return (
@@ -32,6 +9,7 @@ function CourseCard({ title, description }) {
         <CourseCard
           title="Análisis Matemático"
           description="Este curso cubre los conceptos básicos del análisis matemático, incluyendo cálculo diferencial e integral."
+          image="./imagenes/diseñoUX.jpg"
         />
         <CourseCard
           title="Backend con Go"

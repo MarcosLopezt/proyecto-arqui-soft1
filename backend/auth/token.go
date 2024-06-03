@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"errors"
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
@@ -8,19 +9,37 @@ import (
 
 var jwtSecret = []byte("tu_secreto_aqui")
 
+type Claims struct {
+	UserID uint `json:"user_id"`
+	jwt.RegisteredClaims
+}
+
 func GenerateAuthToken(userID uint) (string, error) {
-	// Define el contenido del token
-	claims := jwt.MapClaims{
-		"userID": userID,
-		"exp":    time.Now().Add(time.Hour * 24).Unix(), // El token expira en 24 horas
+	expirationTime := time.Now().Add(24 * time.Hour)
+	claims := &Claims{
+		UserID: userID,
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(expirationTime),
+		},
 	}
-
-	// Crea un nuevo token JWT con los claims y firma con la clave secreta
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	signedToken, err := token.SignedString(jwtSecret)
-	if err != nil {
-		return "", err
-	}
+	return token.SignedString(jwtSecret)
+}
 
-	return signedToken, nil
+// VerifyAuthToken verifica la validez del token JWT
+func VerifyAuthToken(tokenString string) (*Claims, error) {
+	claims := &Claims{}
+	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
+		return jwtSecret, nil
+	})
+	if err != nil {
+		if err == jwt.ErrSignatureInvalid {
+			return nil, errors.New("firma de token inválida")
+		}
+		return nil, errors.New("token inválido")
+	}
+	if !token.Valid {
+		return nil, errors.New("token no válido")
+	}
+	return claims, nil
 }

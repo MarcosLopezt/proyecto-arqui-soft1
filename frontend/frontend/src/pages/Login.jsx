@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Link, Paper, Box, Grid, Typography } from '@mui/material';
 //import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import * as Yup from "yup"
 import { useFormik } from 'formik';
 import { useNavigate } from "react-router-dom";
-import Cookies from "universal-cookie";
+//import Cookies from "universal-cookie";
 
 
 function Copyright(props) {
@@ -23,23 +23,12 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-const usuarios = [
-  {email: "marcos.lopez@gmail", password: "12345"},
-  {email: "marcos.lopez@mindfactory.ar", password: "12345"},
-  {email: "marc12@gmail" , password:"11111" },
-];
-
-
-function goto(path){
-  window.location = window.location.origin + path
-}
-
 export default function Login() {
 
   const navigate = useNavigate();
-  const [cookies, setCookie] = useState({});
+  //const [cookies, setCookie] = useState({});
 
-  const login1 = async (email, password) => {
+  const login = async (email, password) => {
     console.log(email);
     console.log(password);
     const response = await fetch('http://localhost:8080/users/login', {
@@ -53,33 +42,28 @@ export default function Login() {
     if (response.status === 200) {
       const data = await response.json();
       console.log(data);
-      //setCookie('user_id', data.user_id, { path: '/' });
-      //setCookie('email', email, { path: '/login' });
-      //setCookie('user_type', data.type, { path: '/' });
-      goto("/home");
+      console.log(document.cookie);
+      navigate("/home");
       
     } else if (response.status === 400 || response.status === 401 || response.status === 403) {
-      // Manejar caso de credenciales inválidas
       console.log("Invalid username or password");
       alert("Invalid Username or password");
+      navigate("/");
     } else {
-      // Manejar otros errores de la solicitud
       console.error("An error occurred while logging in");
+      navigate("/");
     }
+  };
+
+  const logout = () => {
+    // Elimina la cookie de sesión
+    document.cookie = 'session_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT;';
+    navigate("/");
   };
 
 
   const enviarForm = (values) => {
-    /*const userValid = usuarios.find((usuario) => usuario.email === values.Email && usuario.password === values.Password);
-    // mandar user y pass al back
-    if(userValid){
-      navigate("/home");
-    }else{
-      alert("Invalid Username or password");
-      console.log("Invalid User");
-    }
-    */
-   navigate("/home");
+    login(values.Email, values.Password);
   };
 
   const {handleSubmit, handleChange, values, errors} = useFormik({
@@ -111,7 +95,7 @@ export default function Login() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
+            backgroundImage: `url('../../components/imagenes/designUX.jpg')`,
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
               t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
@@ -135,7 +119,7 @@ export default function Login() {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
-            <Box component="form" noValidate onSubmit={() => login1(values.Email, values.Password)} sx={{ mt: 1 }}>
+            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
                 fullWidth
