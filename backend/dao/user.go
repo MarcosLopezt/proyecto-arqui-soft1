@@ -34,9 +34,9 @@ func GetUserByID(id uint) (*users.User, error) {
 	return &user, nil
 }
 
-func GetUserByUsername(username string) (*users.User, error) {
+func GetUserByEmail(email string) (*users.User, error) {
 	var user users.User
-	if err := db.DB.Where("username = ?", username).First(&user).Error; err != nil {
+	if err := db.DB.Where("email = ?", email).First(&user).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			// No se encontró ningún usuario con el nombre de usuario proporcionado
 			return nil, nil

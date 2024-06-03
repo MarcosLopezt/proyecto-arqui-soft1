@@ -5,11 +5,10 @@ import (
 )
 
 type User struct {
-	ID           uint   `gorm:"primaryKey"`
-	Username     string `gorm:"uniqueIndex"`
-	Email        string
-	PasswordHash string
-	Role         string
-	CreationDate time.Time
-	LastUpdated  time.Time
+	ID           uint      `gorm:"primaryKey"`
+	Email        string    `gorm:"uniqueIndex;not null"`
+	PasswordHash string    `gorm:"not null"`
+	Role         string    `gorm:"not null"`
+	CreationDate time.Time `gorm:"autoCreateTime"`
+	LastUpdated  time.Time `gorm:"autoUpdateTime"`
 }

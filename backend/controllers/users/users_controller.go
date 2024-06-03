@@ -9,6 +9,7 @@ import (
 )
 
 func Login(c *gin.Context) {
+
 	var loginRequest usersDomain.LoginRequest
 	if err := c.ShouldBindJSON(&loginRequest); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -22,10 +23,12 @@ func Login(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, response)
+
 }
 
 func CreateUser(c *gin.Context) {
 	var createUserRequest usersDomain.CreateUserRequest
+
 	if err := c.ShouldBindJSON(&createUserRequest); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

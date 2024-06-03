@@ -2,25 +2,24 @@ package cursos
 
 import (
 	cursosDomain "backend/models/cursos"
-	//"Context"
-	//cursosServices "backend/services/cursos"
+	cursosService "backend/services/cursos"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 
-//funcion para iniciar base de datos
+func CreateCourse(c *gin.Context) {
+	var createCourseRequest cursosDomain.CreateCourseRequest
+	if err := c.ShouldBindJSON(&createCourseRequest); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
-func GetCourses(context *gin.Context) {
-	var courseRequest cursosDomain.CreateCourseRequest
+	course, err := cursosService.CreateCourse(createCourseRequest)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 
-	//buscar los cursos base de datos
-
-	context.BindJSON(&courseRequest)
-
-}
-
-func CreateCourse(context *gin.Context) {
-	var courseRequest cursosDomain.CreateCourseRequest
-	context.BindJSON(&courseRequest)
-	//response := cursosServices.createCourse(courseRequest)
-	context.JSON(201, "Se creo el curso")
+	c.JSON(http.StatusCreated, course)
 }

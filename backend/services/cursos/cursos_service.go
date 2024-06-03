@@ -1,30 +1,27 @@
 package cursos
 
 import (
+	"backend/dao"
 	"backend/models/cursos"
+	"log"
 )
 
-/*
-func RegisterRoutes() *gin.Engine {
+func CreateCourse(request cursos.CreateCourseRequest) (cursos.CreateCourseResponse, error) {
 
-	router := gin.Default()
-
-	//configuramos la base de datos con gorm y sqlite
-
-	db, err := gorm.Open(sqlite.Open("coursed.db"), &gorm.Config{})
-
-	if err != nil {
-		panic("failed to connect database")
+	curso := &cursos.Course{
+		CourseName:  request.CourseName,
+		Category:    request.Category,
+		Length:      request.Length,
+		Description: request.Description,
 	}
 
-	db.AutoMigrate(&cursos.Course{})
-
-}
-*/
-func createCourse(request cursos.CreateCourseRequest) cursos.CreateCourseResponse {
+	if err := dao.CreateCourse(curso); err != nil {
+		log.Printf("Error creating user: %v", err)
+		return cursos.CreateCourseResponse{}, err
+	}
 
 	//almacenar request en la base de datos
 	return cursos.CreateCourseResponse{
 		Message: "Se creo el curso",
-	}
+	}, nil
 }

@@ -1,20 +1,12 @@
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
+import React, { useState } from 'react';
+import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Link, Paper, Box, Grid, Typography } from '@mui/material';
 //import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import * as Yup from "yup"
 import { useFormik } from 'formik';
 import { useNavigate } from "react-router-dom";
+import Cookies from "universal-cookie";
+
 
 function Copyright(props) {
   return (
@@ -29,7 +21,6 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 const usuarios = [
@@ -38,18 +29,57 @@ const usuarios = [
   {email: "marc12@gmail" , password:"11111" },
 ];
 
+
+function goto(path){
+  window.location = window.location.origin + path
+}
+
 export default function Login() {
 
   const navigate = useNavigate();
+  const [cookies, setCookie] = useState({});
+
+  const login1 = async (email, password) => {
+    console.log(email);
+    console.log(password);
+    const response = await fetch('http://localhost:8080/users/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ "email": email, "password": password })
+    });
+
+    if (response.status === 200) {
+      const data = await response.json();
+      console.log(data);
+      //setCookie('user_id', data.user_id, { path: '/' });
+      //setCookie('email', email, { path: '/login' });
+      //setCookie('user_type', data.type, { path: '/' });
+      goto("/home");
+      
+    } else if (response.status === 400 || response.status === 401 || response.status === 403) {
+      // Manejar caso de credenciales inválidas
+      console.log("Invalid username or password");
+      alert("Invalid Username or password");
+    } else {
+      // Manejar otros errores de la solicitud
+      console.error("An error occurred while logging in");
+    }
+  };
+
 
   const enviarForm = (values) => {
-    const userValid = usuarios.find((usuario) => usuario.email === values.Email && usuario.password === values.Password);
+    /*const userValid = usuarios.find((usuario) => usuario.email === values.Email && usuario.password === values.Password);
+    // mandar user y pass al back
     if(userValid){
       navigate("/home");
     }else{
       alert("Invalid Username or password");
       console.log("Invalid User");
     }
+    */
+   navigate("/home");
   };
 
   const {handleSubmit, handleChange, values, errors} = useFormik({
@@ -69,8 +99,6 @@ export default function Login() {
     }),
 
     onSubmit: enviarForm
-
-    
   })
 
   return (
@@ -107,7 +135,7 @@ export default function Login() {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+            <Box component="form" noValidate onSubmit={() => login1(values.Email, values.Password)} sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
                 fullWidth
