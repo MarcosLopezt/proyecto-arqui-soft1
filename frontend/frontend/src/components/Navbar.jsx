@@ -28,7 +28,8 @@ function Navbar() {
       <Toolbar>
         {/* Logo */}
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Logo
+        <img src="/imagenes/logo.png" alt="SkillUp" style={{ height: '50px', marginRight: '20px', borderRadius: '50%' }} />
+        <span style={{ fontSize: '1.5rem' }}>SkillUp</span>
         </Typography>
 
         {/* Barra de búsqueda */}
