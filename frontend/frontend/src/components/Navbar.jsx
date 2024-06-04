@@ -1,14 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AppBar, Toolbar, Typography, IconButton, InputBase, Button, Avatar, Menu, MenuItem, List, ListItem, ListItemIcon, ListItemText, ListItemButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from "react-router-dom";
 import './Componentes.css';
+import { SearchBar } from './SearchBar';
 
-function Navbar() {
+function Navbar(props) {
   const navigate = useNavigate();
   const [logoutOpen, setLogoutOpen] = useState(false);
+  const [userRole, setUserRole] = useState('');
+
+  useEffect(() => {
+    // Establece el rol del usuario solo una vez en el montaje del componente
+    setUserRole(props.role);
+  }, [props.role]);
 
   const handleLogoutClick = () => {
     setLogoutOpen(true);
@@ -35,11 +42,7 @@ function Navbar() {
         <div style={{ marginRight: '20px' }}>
           <div style={{ display: 'flex', alignItems: 'center', backgroundColor: 'white', borderRadius: '4px', paddingLeft: '10px' }}>
             <SearchIcon />
-            <InputBase
-              placeholder="Buscar..."
-              inputProps={{ 'aria-label': 'buscar' }}
-              style={{ marginLeft: '10px' }}
-            />
+            <SearchBar />
           </div>
         </div>
 
@@ -47,6 +50,13 @@ function Navbar() {
         <Button className="button-misCursos" variant="contained" >
           Mis Cursos
         </Button>
+
+           {/* Botón de "Crear Curso" */}
+           {userRole === 'admin' && (
+        <Button className="button-crear-curso" variant="contained" >
+          Crear Curso
+        </Button>
+        )}
 
         {/* Icono de perfil */}
         <IconButton id="profile-icon" onClick={handleLogoutClick}>

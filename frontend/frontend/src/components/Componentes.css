@@ -1,7 +1,8 @@
 
 .button-misCursos{
     background-color: rgb(49, 45, 45) !important;
-    margin-right: 20px;
+    margin-right: 20px !important;
+    margin-left: 20px !important;
 }
 
 .button-misCursos:hover{
@@ -21,4 +22,10 @@
 .icon-logout{
     font-size: 10px; /* Tamaño del texto */
     padding: 1px 1px; 
+}
+
+.button-crear-curso{
+    background-color: rgb(49, 45, 45) !important;
+    margin-right: 20px !important;
+    margin-left: 20px !important;
 }

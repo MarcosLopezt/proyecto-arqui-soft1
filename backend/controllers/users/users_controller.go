@@ -10,25 +10,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-/*
-func Login(c *gin.Context) {
-
-	var loginRequest usersDomain.LoginRequest
-	if err := c.ShouldBindJSON(&loginRequest); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	response, err := usersService.Login(loginRequest)
-	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
-		return
-	}
-
-	c.JSON(http.StatusOK, response)
-
-}
-*/
 func LoginHandler(c *gin.Context) {
 	var loginRequest usersDomain.LoginRequest
 	if err := c.ShouldBindJSON(&loginRequest); err != nil {
@@ -64,7 +45,7 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 
-	log.Printf("Inicio creacion")
+	log.Printf("Inicio creacion1")
 
 	user, err := usersService.CreateUser(createUserRequest)
 	if err != nil {

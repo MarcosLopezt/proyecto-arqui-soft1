@@ -34,39 +34,8 @@ func Login(request users.LoginRequest) (users.LoginResponse, error) {
 		return users.LoginResponse{}, err
 	}
 
-	return users.LoginResponse{Token: token}, nil
+	return users.LoginResponse{Token: token, Role: user.Role}, nil
 }
-
-/*
-func LoginHandler(w http.ResponseWriter, r *http.Request) {
-	var loginReq users.LoginRequest
-	err := json.NewDecoder(r.Body).Decode(&loginReq)
-	if err != nil {
-		http.Error(w, "Invalid request payload", http.StatusBadRequest)
-		return
-	}
-
-	loginResp, err := Login(loginReq)
-	if err != nil {
-		http.Error(w, "Invalid credentials", http.StatusUnauthorized)
-		return
-	}
-
-	expirationTime := time.Now().Add(24 * time.Hour)
-	http.SetCookie(w, &http.Cookie{
-		Name:     "session_token",
-		Value:    loginResp.Token,
-		Expires:  expirationTime,
-		Path:     "/",
-		HttpOnly: true,
-		Secure:   true,
-	})
-
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(loginResp)
-}
-
-*/
 
 func CreateUser(request users.CreateUserRequest) (users.UserResponse, error) {
 	// Hashing the password

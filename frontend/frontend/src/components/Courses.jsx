@@ -9,7 +9,7 @@ import "./CourseCard.css"
         <CourseCard
           title="Análisis Matemático"
           description="Este curso cubre los conceptos básicos del análisis matemático, incluyendo cálculo diferencial e integral."
-          image="./imagenes/diseñoUX.jpg"
+          image={`/assets/designUX.jpg`}
         />
         <CourseCard
           title="Backend con Go"

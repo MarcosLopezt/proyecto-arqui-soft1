@@ -23,3 +23,16 @@ func CreateCourse(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, course)
 }
+
+func GetCourseByName(c *gin.Context) {
+	//var getCourseRequest cursosDomain.GetCourseByNameRequest
+	name := c.Param("course_name")
+
+	course, err := cursosService.GetCourseByName(name)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, course)
+}

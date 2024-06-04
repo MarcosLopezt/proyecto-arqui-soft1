@@ -41,9 +41,12 @@ export default function Login() {
 
     if (response.status === 200) {
       const data = await response.json();
-      console.log(data);
-      console.log(document.cookie);
-      navigate("/home");
+      //console.log(data);
+      //console.log(document.cookie);
+      //console.log(data.role);
+      const role = data.role;
+      localStorage.setItem('authToken', data.token); 
+      navigate("/home",  { state: { role } });
       
     } else if (response.status === 400 || response.status === 401 || response.status === 403) {
       console.log("Invalid username or password");
@@ -54,13 +57,6 @@ export default function Login() {
       navigate("/");
     }
   };
-
-  const logout = () => {
-    // Elimina la cookie de sesión
-    document.cookie = 'session_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT;';
-    navigate("/");
-  };
-
 
   const enviarForm = (values) => {
     login(values.Email, values.Password);

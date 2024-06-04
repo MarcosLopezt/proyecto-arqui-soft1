@@ -25,3 +25,22 @@ func CreateCourse(request cursos.CreateCourseRequest) (cursos.CreateCourseRespon
 		Message: "Se creo el curso",
 	}, nil
 }
+
+func GetCourseByName(courseNameReq string) ([]cursos.GetCourseByNameResponse, error) {
+
+	courses, err := dao.GetCourseByName(courseNameReq)
+	if err != nil {
+		return nil, err
+	}
+
+	var response []cursos.GetCourseByNameResponse
+	for _, course := range courses {
+		response = append(response, cursos.GetCourseByNameResponse{
+			CourseName:  course.CourseName,
+			Description: course.Description,
+			Length:      course.Length,
+			Category:    course.Category,
+		})
+	}
+	return response, nil
+}
