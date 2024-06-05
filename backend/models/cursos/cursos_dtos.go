@@ -16,6 +16,7 @@ type GetCourseByNameRequest struct {
 }
 
 type GetCourseByNameResponse struct {
+	ID          uint   `json:"ID"`
 	CourseName  string `json:"course_name"`
 	Category    string `json:"category"`
 	Description string `json:"description"`

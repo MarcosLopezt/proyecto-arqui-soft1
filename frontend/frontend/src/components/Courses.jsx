@@ -1,30 +1,31 @@
-import React from 'react';
-import CourseCard from './CourseCard';
-import "./CourseCard.css"
+import React from "react";
+import CourseCard from "./CourseCard";
+import "./CourseCard.css";
 
+function capitalizeTitle(title) {
+  return title.replace(/\b\w/g, (char) => char.toUpperCase());
+}
 
-  function Courses() {
-    return (
-      <div className='contenedor-cards'>
-        <CourseCard
-          title="Análisis Matemático"
-          description="Este curso cubre los conceptos básicos del análisis matemático, incluyendo cálculo diferencial e integral."
-          image={`/assets/designUX.jpg`}
-        />
-        <CourseCard
-          title="Backend con Go"
-          description="Aprende a construir aplicaciones de backend utilizando el lenguaje de programación Go y sus frameworks populares."
-        />
-        <CourseCard
-          title="Frontend con React"
-          description="Domina el desarrollo web frontend utilizando React, una de las bibliotecas JavaScript más populares."
-        />
-        <CourseCard
-          title="Diseño UX/UI"
-          description="Explora los principios de diseño UX/UI y aprende a crear experiencias de usuario atractivas y efectivas."
-        />
-      </div>
-    );
-  }
+function Courses({ courses }) {
+  //console.log(courses[0].CourseName);
+  console.log("Courses:", courses);
+  const modulos = courses.length;
+  //const margenEntreTarjetas = `calc(100% / ${modulos})`;
 
-  export default Courses;
+  return (
+    <div className="contenedor-cards" style={{ padding: "60px" }}>
+      {courses.map((course) => (
+        <CourseCard
+          key={course.ID}
+          title={capitalizeTitle(course.course_name)}
+          description={course.description}
+          category={course.category}
+          length={course.length}
+          modulos={modulos}
+        />
+      ))}
+    </div>
+  );
+}
+
+export default Courses;

@@ -36,6 +36,7 @@ func GetCourseByName(courseNameReq string) ([]cursos.GetCourseByNameResponse, er
 	var response []cursos.GetCourseByNameResponse
 	for _, course := range courses {
 		response = append(response, cursos.GetCourseByNameResponse{
+			ID: 		course.ID,
 			CourseName:  course.CourseName,
 			Description: course.Description,
 			Length:      course.Length,

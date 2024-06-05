@@ -5,7 +5,7 @@ import (
 )
 
 type Course struct {
-	ID           uint      `gorm:"primaryKey"`
+	ID           uint      `json:"ID" gorm:"primaryKey"`
 	CourseName   string    `gorm:"not null"`
 	Category     string    `gorm:"not null"`
 	Length       int       `json:"length"`

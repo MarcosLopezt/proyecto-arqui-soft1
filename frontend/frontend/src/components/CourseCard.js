@@ -1,17 +1,27 @@
+import React from "react";
+import {
+  Card,
+  CardMedia,
+  CardContent,
+  CardActions,
+  Button,
+  Typography,
+} from "@mui/material"; // Importa los componentes de Material-UI
+import "./CourseCard.css"; // Importa el archivo CSS para estilos específicos de la tarjeta
 
-import React from 'react';
-import { Card, CardMedia, CardContent, CardActions, Button, Typography } from '@mui/material'; // Importa los componentes de Material-UI
-import './CourseCard.css'; // Importa el archivo CSS para estilos específicos de la tarjeta
-
-function CourseCard({ title, description, className, image }) {
+function CourseCard({
+  title,
+  description,
+  className,
+  image,
+  length,
+  category,
+  modulos,
+}) {
+  const margenEntreTarjetas = `calc(100% / ${modulos})`;
   return (
-    <Card className='card' >
-      <CardMedia
-        component="img"
-        alt="Curso"
-        height="140"
-        image={image} 
-      />
+    <Card className="card" style={{ width: margenEntreTarjetas }}>
+      <CardMedia component="img" alt="Curso" height="140" image={image} />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {title}

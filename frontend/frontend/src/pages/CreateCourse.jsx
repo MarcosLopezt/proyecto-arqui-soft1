@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./Home.css";
-import Courses from "../components/Courses";
 import { useLocation } from "react-router-dom";
 import {
   AppBar,
@@ -15,6 +14,9 @@ import {
   ListItemIcon,
   ListItemText,
   ListItemButton,
+  Grid,
+  Container,
+  TextField,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -26,7 +28,7 @@ import * as Yup from "yup";
 //import { SearchBar } from './SearchBar';
 //validar permisos para ver que modulos mostramos en la navbar
 
-function Home() {
+function CreateCourse() {
   const location = useLocation();
   const role = location.state?.role;
 
@@ -76,14 +78,12 @@ function Home() {
     onSubmit: submit,
   });
 
-  const search = async (name) => {
-    //console.log(name);
-    const response = await fetch(`http://localhost:8080/cursos/${name}`, {
+  const search = async () => {
+    const response = await fetch(`http://localhost:8080/cursos/curso`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
-      //body: JSON.stringify({ "email": email, "password": password })
     });
 
     if (response.status === 200) {
@@ -96,8 +96,24 @@ function Home() {
     }
   };
 
-  const handleButtonClick = () => {
-    navigate("/createCourse");
+  const [curso, setCurso] = useState({
+    course_name: "",
+    category: "",
+    description: "",
+    length: "",
+  });
+
+  const funcOnChange = (event) => {
+    const { name, value } = event.target;
+    setCurso((prevCurso) => ({
+      ...prevCurso,
+      [name]: value,
+    }));
+  };
+
+  const funcOnSubmit = (event) => {
+    event.preventDefault();
+    //crear curso
   };
 
   return (
@@ -147,11 +163,7 @@ function Home() {
 
           {/* Botón de "Crear Curso" */}
           {userRole === "admin" && (
-            <Button
-              className="button-crear-curso"
-              variant="contained"
-              onClick={handleButtonClick}
-            >
+            <Button className="button-crear-curso" variant="contained">
               Crear Curso
             </Button>
           )}
@@ -184,9 +196,70 @@ function Home() {
           </Menu>
         </Toolbar>
       </AppBar>
-      <Courses courses={courses}></Courses>
+      <Container maxWidth="sm">
+        <Typography variant="h4" align="center" gutterBottom>
+          Crear Nuevo Curso
+        </Typography>
+        <form onSubmit={funcOnSubmit}>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <TextField
+                label="Nombre del Curso"
+                name="course_name"
+                value={curso.course_name}
+                onChange={funcOnChange}
+                fullWidth
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Categoría"
+                name="category"
+                value={curso.category}
+                onChange={funcOnChange}
+                fullWidth
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Descripción"
+                name="description"
+                value={curso.description}
+                onChange={funcOnChange}
+                fullWidth
+                multiline
+                rows={4}
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Duración (en semanas)"
+                name="length"
+                type="number"
+                value={curso.length}
+                onChange={funcOnChange}
+                fullWidth
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                fullWidth
+              >
+                Crear Curso
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
+      </Container>
     </>
   );
 }
 
-export default Home;
+export default CreateCourse;
