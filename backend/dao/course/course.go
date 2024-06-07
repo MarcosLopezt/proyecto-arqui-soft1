@@ -35,3 +35,30 @@ func GetCourseByID(id uint) (*cursos.Course, error) {
     }
     return &course, nil
 }
+
+func UpdateCourse(request cursos.UpdateCourseRequest) (*cursos.UpdateCourseResponse, error) {
+    var oldCourse cursos.Course
+    if err := db.DB.First(&oldCourse, request.ID).Error; err != nil {
+        return nil, err
+    }
+
+    oldCourse.CourseName = request.CourseName
+    oldCourse.Category = request.Category
+    oldCourse.Description = request.Description
+    oldCourse.Length = request.Length
+    oldCourse.LastUpdated = request.LastUpdated
+
+    if err := db.DB.Save(&oldCourse).Error; err != nil {
+        return nil, err
+    }
+
+    response := &cursos.UpdateCourseResponse{
+        ID:          oldCourse.ID,
+        CourseName:  oldCourse.CourseName,
+        Category:    oldCourse.Category,
+        Description: oldCourse.Description,
+        Length:      oldCourse.Length,
+    }
+    return response, nil
+
+}

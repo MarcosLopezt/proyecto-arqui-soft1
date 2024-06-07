@@ -4,6 +4,10 @@
   margin-left: 20px !important;
 }
 
+.logo-button:hover {
+  transform: scale(1.1);
+}
+
 .button-misCursos:hover {
   transform: scale(1.1);
 }

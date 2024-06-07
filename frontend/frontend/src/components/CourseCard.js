@@ -40,7 +40,6 @@ function CourseCard({
     localStorage.setItem("cursoDescripcion", description);
     localStorage.setItem("cursoCategoria", category);
     localStorage.setItem("cursoLength", length);
-
     navigate("/course");
   };
 

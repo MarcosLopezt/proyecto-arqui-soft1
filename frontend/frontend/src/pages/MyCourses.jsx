@@ -7,7 +7,6 @@ import {
   Toolbar,
   Typography,
   IconButton,
-  InputBase,
   Button,
   Avatar,
   Menu,
@@ -16,15 +15,10 @@ import {
   ListItemText,
   ListItemButton,
 } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
 import "../components/Componentes.css";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-//import { SearchBar } from './SearchBar';
-//validar permisos para ver que modulos mostramos en la navbar
 
 function Home() {
   const location = useLocation();
@@ -34,10 +28,7 @@ function Home() {
   const [logoutOpen, setLogoutOpen] = useState(false);
   const [userRole, setUserRole] = useState("");
   const [courses, setCourses] = useState([]);
-  //const [recomendados, setRecomendados] = useState(true);
   const [myCourses, setMyCourses] = useState(true);
-  //const [coursesID, setCoursesID] = useState([]);
-  const fetchedCourses = [];
 
   useEffect(() => {
     setUserRole(role);
@@ -101,7 +92,7 @@ function Home() {
       const course = await response.json();
       setCourses((prevCourses) => {
         const updatedCourses = [...prevCourses, course];
-        //console.log(updatedCourses); // Aquí se ve el estado actualizado
+        //console.log(updatedCourses);
         return updatedCourses;
       });
     } else {
@@ -128,9 +119,20 @@ function Home() {
       >
         <Toolbar>
           {/* Logo */}
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Logo
-          </Typography>
+          <Button
+            onClick={() => navigate("/home")}
+            className="logo-button"
+            sx={{
+              color: "inherit",
+              textTransform: "none",
+            }}
+          >
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              Logo
+            </Typography>
+          </Button>
+
+          <div style={{ flexGrow: 1 }}></div>
 
           {/* Barra de búsqueda
           <div style={{ marginRight: "20px" }}>

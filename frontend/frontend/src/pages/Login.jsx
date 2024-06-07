@@ -46,8 +46,6 @@ export default function Login() {
     localStorage.removeItem("authToken");
   }
   const login = async (email, password) => {
-    console.log(email);
-    console.log(password);
     const response = await fetch("http://localhost:8080/users/login", {
       method: "POST",
       headers: {
@@ -61,6 +59,7 @@ export default function Login() {
       const role = data.role;
       localStorage.setItem("authToken", data.token);
       localStorage.setItem("userID", data.id);
+      localStorage.setItem("userRole", role);
       navigate("/home", { state: { role } });
     } else if (
       response.status === 400 ||

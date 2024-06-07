@@ -66,3 +66,34 @@ func GetCourseByID(id string) (cursos.GetCourseByIDResponse, error) {
 		Length: curso.Length,
 	}, nil
 }
+
+
+func UpdateCourse(request cursos.UpdateCourseRequest) (cursos.UpdateCourseResponse, error) {
+    stringid := strconv.FormatUint(uint64(request.ID), 10)
+    curso, err := GetCourseByID(stringid)
+    if err != nil {
+        log.Printf("Error fetching course: %v", err)
+        return cursos.UpdateCourseResponse{}, err
+    }
+
+    // Actualizar los campos del curso
+    curso.CourseName = request.CourseName
+    curso.Category = request.Category
+    curso.Length = request.Length
+    curso.Description = request.Description
+
+    cursoNuevo, err := course.UpdateCourse(request)
+    // Guardar los cambios en la base de datos
+    if err != nil {
+        log.Printf("Error updating course: %v", err)
+        return cursos.UpdateCourseResponse{}, err
+    }
+
+    return cursos.UpdateCourseResponse{
+        ID:          cursoNuevo.ID,
+        CourseName:  cursoNuevo.CourseName,
+        Category:    cursoNuevo.Category,
+        Description: cursoNuevo.Description,
+        Length:      cursoNuevo.Length,
+    }, nil
+}

@@ -23,7 +23,8 @@ func SetupRouter(r *gin.Engine) *gin.Engine {
 		//courseRoutes.Use(middleware.AuthMiddleware())
 		courseRoutes.POST("/curso", cursos.CreateCourse)
 		courseRoutes.GET("/:course_name", cursos.GetCourseByName)
-		courseRoutes.GET("/get/:id", cursos.GetCourseByID)		
+		courseRoutes.GET("/get/:id", cursos.GetCourseByID)
+		courseRoutes.PUT("update", cursos.UpdateCourse)		
 	}
 
 	subsRoutes := r.Group("/subscriptions")

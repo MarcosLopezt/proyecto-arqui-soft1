@@ -35,6 +35,7 @@ function Course() {
   const [open, setOpen] = useState(false);
   const [subscripto, setSubscripto] = useState(false);
   const [snackSubscribed, setSnackSubscribed] = useState(false);
+  const userRole = localStorage.getItem("userRole");
 
   const handleLogoutClick = () => {
     setLogoutOpen(true);
@@ -121,6 +122,10 @@ function Course() {
     setSnackSubscribed(true);
   };
 
+  const handleUpdateButton = () => {
+    //endpoint para editar curso
+  };
+
   return (
     <>
       <AppBar
@@ -130,9 +135,20 @@ function Course() {
       >
         <Toolbar>
           {/* Logo */}
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Logo
-          </Typography>
+          <Button
+            onClick={() => navigate("/home")}
+            className="logo-button"
+            sx={{
+              color: "inherit",
+              textTransform: "none",
+            }}
+          >
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              Logo
+            </Typography>
+          </Button>
+
+          <div style={{ flexGrow: 1 }}></div>
 
           {/* Botón de "Mis Cursos" */}
           <Button
@@ -203,6 +219,15 @@ function Course() {
           >
             {subscripto ? "Inscripto" : "Inscribirme ahora"}
           </Button>
+          {userRole === "admin" && (
+            <Button
+              className="button-crear-curso"
+              variant="contained"
+              onClick={handleUpdateButton}
+            >
+              Editar Curso
+            </Button>
+          )}
           <Snackbar
             open={open}
             autoHideDuration={6000}

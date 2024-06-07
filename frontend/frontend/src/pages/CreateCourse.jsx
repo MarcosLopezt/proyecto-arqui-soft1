@@ -56,7 +56,6 @@ function CreateCourse() {
 
   const funcOnSubmit = async (event) => {
     event.preventDefault();
-    //console.log(curso);
     const lengthInt = parseInt(curso.length, 10);
 
     const response = await fetch("http://localhost:8080/cursos/curso", {
@@ -83,9 +82,20 @@ function CreateCourse() {
       >
         <Toolbar>
           {/* Logo */}
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Logo
-          </Typography>
+          <Button
+            onClick={() => navigate("/home")}
+            className="logo-button"
+            sx={{
+              color: "inherit",
+              textTransform: "none",
+            }}
+          >
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              Logo
+            </Typography>
+          </Button>
+
+          <div style={{ flexGrow: 1 }}></div>
 
           {/* Botón de "Mis Cursos" */}
           <Button className="button-misCursos" variant="contained">

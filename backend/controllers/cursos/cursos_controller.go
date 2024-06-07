@@ -47,3 +47,19 @@ func GetCourseByID(c *gin.Context) {
 
 	c.JSON(http.StatusOK, course)
 }
+
+func UpdateCourse(c *gin.Context) {
+    var updateCourseRequest cursosDomain.UpdateCourseRequest
+    if err := c.ShouldBindJSON(&updateCourseRequest); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
+
+    course, err := cursosService.UpdateCourse(updateCourseRequest)
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+
+    c.JSON(http.StatusCreated, course)
+}

@@ -15,6 +15,8 @@ import {
   ListItemIcon,
   ListItemText,
   ListItemButton,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -24,8 +26,6 @@ import "../components/Componentes.css";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { isAuthenticated } from "../utils/authUtils";
-//import { SearchBar } from './SearchBar';
-//validar permisos para ver que modulos mostramos en la navbar
 
 function Home() {
   const location = useLocation();
@@ -34,10 +34,11 @@ function Home() {
   const navigate = useNavigate();
   const [logoutOpen, setLogoutOpen] = useState(false);
   const [userRole, setUserRole] = useState("");
-  //const [searchText, setSearchText] = useState("");
   const [courses, setCourses] = useState([]);
   const [recomendados, setRecomendados] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   useEffect(() => {
     setUserRole(role);
@@ -64,6 +65,10 @@ function Home() {
     setLogoutOpen(false);
   };
 
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
   const logout = () => {
     localStorage.removeItem("authToken");
     navigate("/");
@@ -84,14 +89,15 @@ function Home() {
       //console.log(courses[0]);
     } else {
       console.log("No existe el curso");
+      setSnackbarMessage("No existen cursos con ese nombre o categoría.");
+      setSnackbarOpen(true);
     }
   };
 
   const submit = (values) => {
     if (!values.text.trim()) {
       setRecomendados(true);
-      //muestre cursos recomendados
-      searchRecommended();
+      searchRecommended(); //muestra cursos recomendado (por defecto de informatica)
     } else {
       setRecomendados(false);
       search(values.text);
@@ -121,11 +127,16 @@ function Home() {
     });
 
     if (response.status === 200) {
-      const data = await response.json();
-      setCourses(data);
-      console.log(courses[0]);
+      const cursos = await response.json();
+      if (cursos === null) {
+        setSnackbarMessage("No existen cursos con ese nombre o categoría.");
+        setSnackbarOpen(true);
+      }
+      setCourses(cursos);
     } else {
-      console.log("No existe el curso");
+      console.log("no encontre cursos");
+      setSnackbarMessage("No existen cursos con ese nombre o categoría.");
+      setSnackbarOpen(true);
     }
   };
 
@@ -227,7 +238,28 @@ function Home() {
           </Menu>
         </Toolbar>
       </AppBar>
-      <Courses courses={courses}></Courses>
+
+      {courses && courses.length > 0 && <Courses courses={courses} />}
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity="error"
+          sx={{
+            width: "100%",
+            fontSize: "1.2em",
+            padding: "20px",
+            maxWidth: "600px",
+          }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </>
   );
 }

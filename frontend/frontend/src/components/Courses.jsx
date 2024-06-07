@@ -7,10 +7,13 @@ function capitalizeTitle(title) {
 }
 
 function Courses({ courses }) {
-  console.log("Courses:", courses);
+  //console.log("Courses:", courses);
   const modulos = courses.length;
   const shouldWrap = modulos > 4;
   //const margenEntreTarjetas = `calc(100% / ${modulos})`;
+  if (modulos === 0) {
+    return null;
+  }
 
   return (
     <div
