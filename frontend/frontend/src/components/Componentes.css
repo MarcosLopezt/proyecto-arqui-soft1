@@ -1,31 +1,35 @@
-
-.button-misCursos{
-    background-color: rgb(49, 45, 45) !important;
-    margin-right: 20px !important;
-    margin-left: 20px !important;
+.button-misCursos {
+  background-color: rgb(49, 45, 45) !important;
+  margin-right: 20px !important;
+  margin-left: 20px !important;
 }
 
-.button-misCursos:hover{
-    transform: scale(1.1);
+.button-misCursos:hover {
+  transform: scale(1.1);
 }
 
-.button-logout  {
-    font-size: 16px; /* Tamaño del texto */
-    padding: 2px 3px; /* Relleno superior e inferior: 10px, relleno izquierdo y derecho: 20px */
+.button-subscribe:hover {
+  transform: scale(1.1);
+  background-color: rgb(49, 45, 45) !important;
 }
 
-.list-conteiner{
-    font-size: 16px; /* Tamaño del texto */
-    padding: 1px 1px;
+.button-logout {
+  font-size: 16px; /* Tamaño del texto */
+  padding: 2px 3px; /* Relleno superior e inferior: 10px, relleno izquierdo y derecho: 20px */
 }
 
-.icon-logout{
-    font-size: 10px; /* Tamaño del texto */
-    padding: 1px 1px; 
+.list-conteiner {
+  font-size: 16px; /* Tamaño del texto */
+  padding: 1px 1px;
 }
 
-.button-crear-curso{
-    background-color: rgb(49, 45, 45) !important;
-    margin-right: 20px !important;
-    margin-left: 20px !important;
+.icon-logout {
+  font-size: 10px; /* Tamaño del texto */
+  padding: 1px 1px;
+}
+
+.button-crear-curso {
+  background-color: rgb(49, 45, 45) !important;
+  margin-right: 20px !important;
+  margin-left: 20px !important;
 }

@@ -2,6 +2,7 @@ package router
 
 import (
 	"backend/controllers/cursos"
+	"backend/controllers/subscripciones"
 	"backend/controllers/users"
 
 	"github.com/gin-gonic/gin"
@@ -22,6 +23,13 @@ func SetupRouter(r *gin.Engine) *gin.Engine {
 		//courseRoutes.Use(middleware.AuthMiddleware())
 		courseRoutes.POST("/curso", cursos.CreateCourse)
 		courseRoutes.GET("/:course_name", cursos.GetCourseByName)
+		courseRoutes.GET("/get/:id", cursos.GetCourseByID)		
+	}
+
+	subsRoutes := r.Group("/subscriptions")
+	{
+		subsRoutes.POST("/sub", subscripciones.CreateSubs)
+		subsRoutes.GET("/get/:user_id", subscripciones.GetSubByUserId)
 	}
 
 	return r

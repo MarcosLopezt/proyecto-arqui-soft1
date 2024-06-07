@@ -7,21 +7,26 @@ function capitalizeTitle(title) {
 }
 
 function Courses({ courses }) {
-  //console.log(courses[0].CourseName);
   console.log("Courses:", courses);
   const modulos = courses.length;
+  const shouldWrap = modulos > 4;
   //const margenEntreTarjetas = `calc(100% / ${modulos})`;
 
   return (
-    <div className="contenedor-cards" style={{ padding: "60px" }}>
+    <div
+      className={`contenedor-cards ${shouldWrap ? "wrap" : ""}`}
+      style={{ padding: "60px" }}
+    >
       {courses.map((course) => (
         <CourseCard
           key={course.ID}
+          ID={course.ID}
           title={capitalizeTitle(course.course_name)}
           description={course.description}
           category={course.category}
           length={course.length}
           modulos={modulos}
+          image={`/assets/skillup${Math.floor(Math.random() * 7) + 2}.jpg`}
         />
       ))}
     </div>

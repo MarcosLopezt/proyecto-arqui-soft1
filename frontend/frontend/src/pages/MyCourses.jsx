@@ -23,7 +23,6 @@ import { useNavigate } from "react-router-dom";
 import "../components/Componentes.css";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { isAuthenticated } from "../utils/authUtils";
 //import { SearchBar } from './SearchBar';
 //validar permisos para ver que modulos mostramos en la navbar
 
@@ -34,27 +33,21 @@ function Home() {
   const navigate = useNavigate();
   const [logoutOpen, setLogoutOpen] = useState(false);
   const [userRole, setUserRole] = useState("");
-  //const [searchText, setSearchText] = useState("");
   const [courses, setCourses] = useState([]);
-  const [recomendados, setRecomendados] = useState(true);
-  const [authenticated, setAuthenticated] = useState(false);
+  //const [recomendados, setRecomendados] = useState(true);
+  const [myCourses, setMyCourses] = useState(true);
+  //const [coursesID, setCoursesID] = useState([]);
+  const fetchedCourses = [];
 
   useEffect(() => {
     setUserRole(role);
   }, [role]);
 
   useEffect(() => {
-    if (recomendados) {
-      searchRecommended();
+    if (myCourses) {
+      searchMyCourses();
     }
-  }, [recomendados]);
-
-  useEffect(() => {
-    setAuthenticated(isAuthenticated);
-    if (authenticated) {
-      logout();
-    }
-  }, []);
+  }, [myCourses]);
 
   const handleLogoutClick = () => {
     setLogoutOpen(true);
@@ -65,78 +58,65 @@ function Home() {
   };
 
   const logout = () => {
-    localStorage.removeItem("authToken");
+    document.cookie =
+      "session_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT;";
     navigate("/");
   };
 
-  const searchRecommended = async () => {
-    const name = "informatica"; //cursos recomendados a buscar
-    const response = await fetch(`http://localhost:8080/cursos/${name}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+  const searchMyCourses = async () => {
+    const userID = parseInt(localStorage.getItem("userID"), 10);
+    const response = await fetch(
+      `http://localhost:8080/subscriptions/get/${userID}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     if (response.status === 200) {
-      const data = await response.json();
-      setCourses(data);
-      //console.log(courses[0]);
+      const cursos = await response.json();
+      setMyCourses(false);
+      cursos.forEach((curso) => {
+        getCourseById(curso.course_id);
+      });
     } else {
-      console.log("No existe el curso");
+      console.log("No esta subscripto");
     }
   };
 
-  const submit = (values) => {
-    if (!values.text.trim()) {
-      setRecomendados(true);
-      //muestre cursos recomendados
-      searchRecommended();
-    } else {
-      setRecomendados(false);
-      search(values.text);
-    }
-  };
-
-  const { handleSubmit, handleChange, values, errors } = useFormik({
-    initialValues: {
-      text: "",
-    },
-
-    validationSchema: Yup.object({
-      text: Yup.string()
-        .required("¡Campo Requerido!")
-        .max(255, "Maximo 255 caracteres"),
-    }),
-
-    onSubmit: submit,
-  });
-
-  const search = async (name) => {
-    const response = await fetch(`http://localhost:8080/cursos/${name}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+  const getCourseById = async (courseID) => {
+    const response = await fetch(
+      `http://localhost:8080/cursos/get/${courseID}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     if (response.status === 200) {
-      const data = await response.json();
-      setCourses(data);
-      console.log(courses[0]);
+      const course = await response.json();
+      setCourses((prevCourses) => {
+        const updatedCourses = [...prevCourses, course];
+        //console.log(updatedCourses); // Aquí se ve el estado actualizado
+        return updatedCourses;
+      });
     } else {
       console.log("No existe el curso");
     }
+
+    //console.log(courses);
   };
 
   const handleButtonClick = () => {
-    setRecomendados(true);
     navigate("/createCourse");
   };
 
-  const handleMisCursosButton = () => {
-    setRecomendados(true);
-    navigate("/mycourses");
+  const handleHomeButton = () => {
+    navigate("/home");
   };
 
   return (
@@ -152,7 +132,7 @@ function Home() {
             Logo
           </Typography>
 
-          {/* Barra de búsqueda */}
+          {/* Barra de búsqueda
           <div style={{ marginRight: "20px" }}>
             <div
               style={{
@@ -177,15 +157,15 @@ function Home() {
                 />
               </form>
             </div>
-          </div>
+          </div> */}
 
-          {/* Botón de "Mis Cursos" */}
+          {/* Botón de "Home" */}
           <Button
             className="button-misCursos"
             variant="contained"
-            onClick={handleMisCursosButton}
+            onClick={handleHomeButton}
           >
-            Mis Cursos
+            Home
           </Button>
 
           {/* Botón de "Crear Curso" */}

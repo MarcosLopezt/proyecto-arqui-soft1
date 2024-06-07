@@ -36,3 +36,14 @@ func GetCourseByName(c *gin.Context) {
 
 	c.JSON(http.StatusOK, course)
 }
+
+func GetCourseByID(c *gin.Context) {
+	id := c.Param("id")
+	course, err := cursosService.GetCourseByID(id)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, course)
+}

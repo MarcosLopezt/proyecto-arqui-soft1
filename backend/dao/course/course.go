@@ -1,4 +1,4 @@
-package dao
+package course
 
 import (
 	"backend/db"
@@ -15,7 +15,7 @@ func CreateCourse(curso *cursos.Course) error {
 func GetCourseByName(courseName string) ([]cursos.Course, error) {
 	var courses []cursos.Course
 
-	if err := db.DB.Where("course_name LIKE ?", "%"+courseName+"%").Find(&courses).Error; err != nil {
+	if err := db.DB.Where("course_name LIKE ? OR category LIKE ?", "%"+courseName+"%", "%"+courseName+"%").Find(&courses).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			// No se encontró ningún curso con ese nombre
 			return nil, nil
@@ -25,4 +25,13 @@ func GetCourseByName(courseName string) ([]cursos.Course, error) {
 	}
 
 	return courses, nil
+}
+
+
+func GetCourseByID(id uint) (*cursos.Course, error) {
+    var course cursos.Course
+    if err := db.DB.First(&course, id).Error; err != nil {
+        return nil, err
+    }
+    return &course, nil
 }

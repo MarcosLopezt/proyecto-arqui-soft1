@@ -21,9 +21,6 @@ func Login(request users.LoginRequest) (users.LoginResponse, error) {
 		return users.LoginResponse{}, err
 	}
 
-	//log.Printf(request.Password)
-	//log.Printf(user.PasswordHash)
-
 	err = bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(request.Password))
 	if err != nil {
 		return users.LoginResponse{}, errors.New("credenciales inválidas")
@@ -34,7 +31,7 @@ func Login(request users.LoginRequest) (users.LoginResponse, error) {
 		return users.LoginResponse{}, err
 	}
 
-	return users.LoginResponse{Token: token, Role: user.Role}, nil
+	return users.LoginResponse{Token: token, Role: user.Role, ID: user.ID}, nil
 }
 
 func CreateUser(request users.CreateUserRequest) (users.UserResponse, error) {

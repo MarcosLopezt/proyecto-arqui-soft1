@@ -22,3 +22,15 @@ type GetCourseByNameResponse struct {
 	Description string `json:"description"`
 	Length      int    `json:"length"`
 }
+
+type GetCourseByIDResponse struct {
+	ID          uint   `json:"ID"`
+	CourseName  string `json:"course_name"`
+	Category    string `json:"category"`
+	Description string `json:"description"`
+	Length      int    `json:"length"`
+}
+
+type GetCourseByIDRequest struct {
+	ID uint `json:"ID"`
+}
