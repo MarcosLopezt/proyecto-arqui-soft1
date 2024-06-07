@@ -21,6 +21,7 @@ import {
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
+import UpdateCourse from './UpdateCourse';
 
 import "../components/Componentes.css";
 
@@ -122,8 +123,18 @@ function Course() {
     setSnackSubscribed(true);
   };
 
-  const handleUpdateButton = () => {
+  const handleUpdateButton = async () => {
     //endpoint para editar curso
+    navigate("/update", {
+      state: {
+          courseID,
+          titulo,
+          descripcion,
+          categoria,
+          length
+      }
+  })
+
   };
 
   return (

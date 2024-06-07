@@ -7,6 +7,7 @@ import CreateCourse from "../pages/CreateCourse";
 import ProtectedRoute from "./ProtectedRoute";
 import Course from "../pages/Course";
 import MyCourses from "../pages/MyCourses";
+import UpdateCourse from "../pages/UpdateCourse";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/createCourse" element={<CreateCourse />} />
         <Route path="/course" element={<Course />} />
         <Route path="/mycourses" element={<MyCourses />} />
+        <Route path="/update" element={<UpdateCourse />} />
       </Route>
     </Routes>
   );
