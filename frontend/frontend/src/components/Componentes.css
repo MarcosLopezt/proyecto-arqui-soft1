@@ -44,11 +44,24 @@
 
 .button-editar-curso {
   background-color: rgb(49, 45, 45) !important;
+
   margin-right: 20px !important;
   margin-left: 20px !important;
   margin-top: 20px !important;
 }
 
 .button-editar-curso:hover {
+  transform: scale(1.1);
+}
+
+.button-comentar {
+  background-color: rgb(49, 45, 45) !important;
+  color: white !important;
+  margin-right: 20px !important;
+  margin-left: 20px !important;
+  margin-top: 20px !important;
+}
+
+.button-comentar:hover {
   transform: scale(1.1);
 }

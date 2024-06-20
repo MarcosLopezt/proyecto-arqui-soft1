@@ -1,6 +1,7 @@
 package router
 
 import (
+	"backend/controllers/comentarios"
 	"backend/controllers/cursos"
 	"backend/controllers/subscripciones"
 	"backend/controllers/users"
@@ -32,6 +33,12 @@ func SetupRouter(r *gin.Engine) *gin.Engine {
 	{
 		subsRoutes.POST("/sub", subscripciones.CreateSubs)
 		subsRoutes.GET("/get/:user_id", subscripciones.GetSubByUserId)
+	}
+
+	comentRoutes := r.Group("/coments")
+	{
+		comentRoutes.POST("/coment", comentarios.CreateComent)
+		comentRoutes.GET("/:id", comentarios.GetComentsByCourse)
 	}
 
 	return r

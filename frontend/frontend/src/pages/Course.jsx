@@ -17,10 +17,12 @@ import {
   Paper,
   Snackbar,
   Alert,
+  InputBase,
 } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
+import Comments from "./Coments";
 
 import "../components/Componentes.css";
 
@@ -36,6 +38,10 @@ function Course() {
   const [subscripto, setSubscripto] = useState(false);
   const [snackSubscribed, setSnackSubscribed] = useState(false);
   const userRole = localStorage.getItem("userRole");
+  const [comentarioText, setComentarioText] = useState("");
+  const userID = localStorage.getItem("userID");
+  const [snackComent, setSnackComent] = useState(false);
+  const [comentErr, setComentErr] = useState(false);
 
   const handleLogoutClick = () => {
     setLogoutOpen(true);
@@ -125,13 +131,44 @@ function Course() {
     }
   };
 
-  const handleClose = (event, reason) => {
+  const handleComment = async () => {
+    const userintID = parseInt(userID);
+
+    if (comentarioText === "") {
+      setComentErr(true);
+      return;
+    }
+    const response = await fetch(`http://localhost:8080/coments/coment`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_id: userintID,
+        curso_id: courseID,
+        texto: comentarioText,
+      }),
+    });
+
+    console.log(response);
+
+    if (response.status === 201) {
+      //const data = await response.json();
+      setSnackComent(true);
+    } else {
+      console.log("Error al comentar");
+    }
+  };
+
+  const handleClose = (reason) => {
     if (reason === "clickaway") {
       return;
     }
 
     setOpen(false);
     setSnackSubscribed(false);
+    setSnackComent(false);
+    setComentErr(false);
   };
 
   const handleMisCursosButton = () => {
@@ -208,7 +245,13 @@ function Course() {
         </Toolbar>
       </AppBar>
       <Container maxWidth="lg" sx={{ marginTop: "20px" }}>
-        <Paper sx={{ padding: "20px", border: "3px solid #785589" }}>
+        <Paper
+          sx={{
+            padding: "20px",
+            border: "3px solid #785589",
+            backgroundColor: "#f0f0f0",
+          }}
+        >
           <Typography variant="h4" gutterBottom>
             {titulo}
           </Typography>
@@ -239,6 +282,7 @@ function Course() {
           >
             {subscripto ? "Inscripto" : "Inscribirme ahora"}
           </Button>
+
           {userRole === "admin" && (
             <>
               <Button
@@ -285,7 +329,7 @@ function Course() {
           >
             <Alert
               onClose={handleClose}
-              severity="error" // Cambiado a "error" para color rojo
+              severity="error"
               sx={{
                 width: "100%",
                 fontSize: "1.2em",
@@ -296,7 +340,89 @@ function Course() {
               ¡Ya estás subscripto!
             </Alert>
           </Snackbar>
+          <Snackbar
+            open={snackComent}
+            autoHideDuration={6000}
+            onClose={handleClose}
+            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          >
+            <Alert
+              onClose={handleClose}
+              severity="success"
+              sx={{
+                width: "100%",
+                fontSize: "1.2em",
+                padding: "20px",
+                maxWidth: "600px",
+              }}
+            >
+              Comentario realizado con exito!
+            </Alert>
+          </Snackbar>
+          <Snackbar
+            open={comentErr}
+            autoHideDuration={6000}
+            onClose={handleClose}
+            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          >
+            <Alert
+              onClose={handleClose}
+              severity="error"
+              sx={{
+                width: "100%",
+                fontSize: "1.2em",
+                padding: "20px",
+                maxWidth: "600px",
+              }}
+            >
+              ¡No se aceptan comentarios vacios!
+            </Alert>
+          </Snackbar>
         </Paper>
+        <Grid container spacing={2} alignItems="center">
+          {/* Formulario para agregar comentario */}
+          <Grid item xs={12}>
+            <Paper
+              elevation={3}
+              sx={{
+                padding: "10px",
+                backgroundColor: "#f0f0f0",
+                borderRadius: 1,
+                marginTop: "20px",
+                border: "3px solid #785589",
+              }}
+            >
+              <Typography variant="h5" gutterBottom>
+                {" "}
+                Dejanos tu opinion del curso:
+              </Typography>
+              <InputBase
+                fullWidth
+                placeholder="Agregar comentario"
+                sx={{ paddingLeft: 2 }}
+                inputProps={{
+                  "aria-label": "agregar comentario",
+                  value: comentarioText,
+                  onChange: (e) => setComentarioText(e.target.value),
+                }}
+              />
+              <Button
+                variant="contained"
+                className="button-comentar"
+                value
+                sx={{ marginLeft: 2, marginTop: 2 }}
+                onClick={handleComment}
+              >
+                Enviar
+              </Button>
+            </Paper>
+          </Grid>
+
+          {/* Sección de comentarios */}
+          <Grid item xs={12}>
+            <Comments />
+          </Grid>
+        </Grid>
       </Container>
     </>
   );
