@@ -24,7 +24,8 @@ func SetupRouter(r *gin.Engine) *gin.Engine {
 		courseRoutes.POST("/curso", cursos.CreateCourse)
 		courseRoutes.GET("/:course_name", cursos.GetCourseByName)
 		courseRoutes.GET("/get/:id", cursos.GetCourseByID)
-		courseRoutes.PUT("update", cursos.UpdateCourse)		
+		courseRoutes.PUT("/update", cursos.UpdateCourse)		
+		courseRoutes.DELETE("/delete", cursos.DeleteCourse)
 	}
 
 	subsRoutes := r.Group("/subscriptions")

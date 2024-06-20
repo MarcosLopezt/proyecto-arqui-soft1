@@ -1,6 +1,7 @@
 package course
 
 import (
+	"backend/dao"
 	"backend/db"
 	"backend/models/cursos"
 	"errors"
@@ -61,4 +62,26 @@ func UpdateCourse(request cursos.UpdateCourseRequest) (*cursos.UpdateCourseRespo
     }
     return response, nil
 
+}
+
+func DeleteCourse(request cursos.DeleteCourseRequest)(*cursos.DeleteCourseResponse, error){
+    var curso cursos.Course
+    
+    if  err:= dao.DeleteSubByCourseId(request.ID); err != nil {
+        return  nil, err
+    }
+
+    if err := db.DB.First(&curso, request.ID).Error; err != nil {
+        return nil, err
+    }
+
+    if err := db.DB.Delete(&curso).Error; err != nil {
+        return nil, err
+    }
+
+    response := &cursos.DeleteCourseResponse{
+        Message: "Se elmino el curso de manera exitosa",
+    }
+
+    return response, nil
 }

@@ -97,3 +97,16 @@ func UpdateCourse(request cursos.UpdateCourseRequest) (cursos.UpdateCourseRespon
         Length:      cursoNuevo.Length,
     }, nil
 }
+
+func DeleteCourse(request cursos.DeleteCourseRequest) (cursos.DeleteCourseResponse, error){
+	
+	curso, err := course.DeleteCourse(request)
+
+	if err != nil {
+		return cursos.DeleteCourseResponse{}, err
+	}
+
+	return cursos.DeleteCourseResponse{
+		Message: curso.Message,
+	}, nil
+}

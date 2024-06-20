@@ -55,3 +55,11 @@ type UpdateCourseResponse struct {
 	Description string `json:"description"`
 	Length      int    `json:"length"`
 }
+
+type DeleteCourseRequest struct {
+    ID uint `json:"ID"`
+}
+
+type DeleteCourseResponse struct {
+    Message string `json:"message"`
+}

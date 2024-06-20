@@ -15,18 +15,24 @@ import {
   Grid,
   Container,
   TextField,
-  Snackbar,
   Alert,
+  Snackbar,
 } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
 import "../components/Componentes.css";
 
-function CreateCourse() {
+function UpdateCourse() {
   const navigate = useNavigate();
   const [logoutOpen, setLogoutOpen] = useState(false);
+  const courseID = parseInt(localStorage.getItem("courseID"), 10);
+  const titulo = localStorage.getItem("cursoTitulo");
+  const descripcion = localStorage.getItem("cursoDescripcion");
+  const categoria = localStorage.getItem("cursoCategoria");
+  const length = parseInt(localStorage.getItem("cursoLength"), 10);
   const [open, setOpen] = useState(false);
+  const [wrongOpen, setWrongOpen] = useState(false);
 
   const handleLogoutClick = () => {
     setLogoutOpen(true);
@@ -43,10 +49,11 @@ function CreateCourse() {
   };
 
   const [curso, setCurso] = useState({
-    course_name: "",
-    category: "",
-    description: "",
-    length: "",
+    ID: courseID,
+    course_name: titulo || "",
+    category: categoria || "",
+    description: descripcion || "",
+    length: length || "",
   });
 
   const funcOnChange = (event) => {
@@ -60,24 +67,28 @@ function CreateCourse() {
   const funcOnSubmit = async (event) => {
     event.preventDefault();
     const lengthInt = parseInt(curso.length, 10);
+    //console.log(curso);
 
-    const response = await fetch("http://localhost:8080/cursos/curso", {
-      method: "POST",
+    const response = await fetch(`http://localhost:8080/cursos/update`, {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ ...curso, length: lengthInt }),
     });
 
+    //console.log(response);
+
     if (response.ok) {
+      //console.log("Curso actualizado exitosamente.");
       setOpen(true);
-      console.log("Curso creado exitosamente.");
     } else {
-      console.error("Error al crear el curso:", response.statusText);
+      setWrongOpen(true);
+      console.error("Error al actualizar el curso:", response.statusText);
     }
   };
 
-  const handleClose = (event, reason) => {
+  const handleClose = (reason) => {
     if (reason === "clickaway") {
       return;
     }
@@ -197,9 +208,8 @@ function CreateCourse() {
                 type="submit"
                 fullWidth
               >
-                Crear Curso
+                Actualizar Curso
               </Button>
-
               <Snackbar
                 open={open}
                 autoHideDuration={6000}
@@ -216,7 +226,26 @@ function CreateCourse() {
                     maxWidth: "600px",
                   }}
                 >
-                  Subscripción realizada con éxito
+                  Modificacion realizada con éxito
+                </Alert>
+              </Snackbar>
+              <Snackbar
+                open={wrongOpen}
+                autoHideDuration={6000}
+                onClose={handleClose}
+                anchorOrigin={{ vertical: "top", horizontal: "right" }}
+              >
+                <Alert
+                  onClose={handleClose}
+                  severity="error"
+                  sx={{
+                    width: "100%",
+                    fontSize: "1.2em",
+                    padding: "20px",
+                    maxWidth: "600px",
+                  }}
+                >
+                  Error en la modificacion!
                 </Alert>
               </Snackbar>
             </Grid>
@@ -227,4 +256,4 @@ function CreateCourse() {
   );
 }
 
-export default CreateCourse;
+export default UpdateCourse;

@@ -29,7 +29,7 @@ function Courses({ courses }) {
           category={course.category}
           length={course.length}
           modulos={modulos}
-          image={`/assets/skillup${Math.floor(Math.random() * 7) + 2}.jpg`}
+          image={`/assets/skillup${Math.floor(Math.random() * 6) + 2}.jpg`}
         />
       ))}
     </div>

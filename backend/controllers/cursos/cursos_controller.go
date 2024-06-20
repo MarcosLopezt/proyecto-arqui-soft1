@@ -63,3 +63,20 @@ func UpdateCourse(c *gin.Context) {
 
     c.JSON(http.StatusCreated, course)
 }
+
+func DeleteCourse(c *gin.Context) {
+	//id := c.Param("id")
+    var deleteCourseRequest cursosDomain.DeleteCourseRequest
+    if err := c.ShouldBindJSON(&deleteCourseRequest); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
+
+    course, err := cursosService.DeleteCourse(deleteCourseRequest)
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+
+    c.JSON(http.StatusCreated, course)
+}

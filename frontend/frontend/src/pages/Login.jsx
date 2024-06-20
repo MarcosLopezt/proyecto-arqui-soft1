@@ -108,7 +108,7 @@ export default function Login() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: `url(/assets/designUX.jpg)`,
+            backgroundImage: `url(/assets/skillup3.jpg)`,
             backgroundRepeat: "no-repeat",
             backgroundColor: (t) =>
               t.palette.mode === "light"

@@ -53,8 +53,8 @@ function Course() {
 
   const handleSubscription = async () => {
     const userID = parseInt(localStorage.getItem("userID"), 10);
-    console.log(userID);
-    console.log(courseID);
+    //console.log(userID);
+    //console.log(courseID);
 
     const response = await fetch(`http://localhost:8080/subscriptions/sub`, {
       method: "POST",
@@ -71,6 +71,26 @@ function Course() {
       setSubscripto(true);
     } else {
       console.log("Error en la subscripcion");
+    }
+  };
+
+  const handleDeleteButton = async () => {
+    const response = await fetch(`http://localhost:8080/cursos/delete`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ID: courseID }),
+    });
+
+    console.log(response);
+
+    if (response.status === 201) {
+      const data = await response.json();
+      console.log(data);
+      navigate("/home");
+    } else {
+      console.log("Error al borrar");
     }
   };
 
@@ -123,7 +143,7 @@ function Course() {
   };
 
   const handleUpdateButton = () => {
-    //endpoint para editar curso
+    navigate("/update");
   };
 
   return (
@@ -220,13 +240,23 @@ function Course() {
             {subscripto ? "Inscripto" : "Inscribirme ahora"}
           </Button>
           {userRole === "admin" && (
-            <Button
-              className="button-crear-curso"
-              variant="contained"
-              onClick={handleUpdateButton}
-            >
-              Editar Curso
-            </Button>
+            <>
+              <Button
+                className="button-editar-curso"
+                variant="contained"
+                onClick={handleUpdateButton}
+              >
+                Editar Curso
+              </Button>
+
+              <Button
+                className="button-editar-curso"
+                variant="contained"
+                onClick={handleDeleteButton}
+              >
+                Eliminar Curso
+              </Button>
+            </>
           )}
           <Snackbar
             open={open}

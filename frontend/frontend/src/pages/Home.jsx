@@ -28,21 +28,21 @@ import * as Yup from "yup";
 import { isAuthenticated } from "../utils/authUtils";
 
 function Home() {
-  const location = useLocation();
-  const role = location.state?.role;
+  //const location = useLocation();
+  const userRole = localStorage.getItem("userRole");
 
   const navigate = useNavigate();
   const [logoutOpen, setLogoutOpen] = useState(false);
-  const [userRole, setUserRole] = useState("");
+  //const [userRole, setUserRole] = useState(role);
   const [courses, setCourses] = useState([]);
   const [recomendados, setRecomendados] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
-  useEffect(() => {
-    setUserRole(role);
-  }, [role]);
+  // useEffect(() => {
+  //   setUserRole(role);
+  // }, [role]);
 
   useEffect(() => {
     if (recomendados) {
