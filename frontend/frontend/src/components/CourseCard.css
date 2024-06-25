@@ -1,0 +1,32 @@
+.contenedor-cards {
+  display: flex;
+}
+.contenedor-cards.wrap {
+  flex-wrap: wrap; /* Permitir wrapping si hay más de 4 módulos */
+}
+.card {
+  margin: 20px;
+  margin-top: 60px;
+  width: 300px;
+  height: 370px;
+  border: 3px solid #ccc;
+  transition: all 0.3s ease !important;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: scale(1.1);
+  border-color: #785589;
+}
+
+.card-actions {
+  justify-content: flex-end;
+  margin-top: auto;
+  position: absolute;
+  display: flex;
+  background: white;
+}
+
+.button-info:hover {
+  display: block;
+}
